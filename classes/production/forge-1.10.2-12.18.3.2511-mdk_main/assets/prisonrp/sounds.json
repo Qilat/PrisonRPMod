@@ -1,0 +1,11 @@
+{
+  "404Serpents": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "prisonrp:404Serpents",
+        "stream": true
+      }
+    ]
+  }
+}

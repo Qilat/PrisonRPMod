@@ -1,0 +1,16 @@
+[
+{
+  "modid": "prisonrp",
+  "name": "PrisonRP",
+  "description": "Mod for PrisonRP",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://www.prisonrp.fr",
+  "updateUrl": "",
+  "authorList": ["Qilat"],
+  "credits": "The Forge and FML team",
+  "logoFile": "assets/prisonrp/textures/logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]
