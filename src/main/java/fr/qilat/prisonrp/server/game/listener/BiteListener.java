@@ -1,7 +1,7 @@
 package fr.qilat.prisonrp.server.game.listener;
 
 import fr.qilat.prisonrp.server.entity.EntityCZombie;
-import fr.qilat.prisonrp.server.game.BiteManager;
+import fr.qilat.prisonrp.server.game.bite.BiteManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;

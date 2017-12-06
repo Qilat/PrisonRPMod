@@ -1,5 +1,7 @@
 package fr.qilat.prisonrp.server.entity;
 
+import fr.qilat.prisonrp.CustomLootTable;
+import fr.qilat.prisonrp.PrisonRPCore;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
@@ -7,21 +9,32 @@ import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Qilat on 25/11/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
 public class EntityCZombie extends EntityZombie {
     public static final String name = "czombie";
-    private GrowthType growthType = GrowthType.KID;
+    private GrowthType growthType = GrowthType.WALKER;
 
     public EntityCZombie(World worldIn) {
         super(worldIn);
         this.applyCustomEntityAttributes();
     }
+
 
     public EntityCZombie(World worldIn, GrowthType type) {
         super(worldIn);
@@ -33,32 +46,20 @@ public class EntityCZombie extends EntityZombie {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (this.world.isDaytime() && !this.world.isRemote && !this.isChild() && (this.getZombieType() == null || this.getZombieType().isSunSensitive())) {
-            float f = this.getBrightness(1.0F);
-            BlockPos blockpos = this.getRidingEntity() instanceof EntityBoat ? (new BlockPos(this.posX, (double) Math.round(this.posY), this.posZ)).up() : new BlockPos(this.posX, (double) Math.round(this.posY), this.posZ);
+        this.extinguish();
+    }
 
-            if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.world.canSeeSky(blockpos)) {
-                boolean flag = true;
-                ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+    @Override
+    protected int getExperiencePoints(EntityPlayer player) {
+        return 0;
+    }
 
-                if (itemstack != null) {
-                    if (itemstack.isItemStackDamageable()) {
-                        itemstack.setItemDamage(itemstack.getItemDamage() + this.rand.nextInt(2));
 
-                        if (itemstack.getItemDamage() >= itemstack.getMaxDamage()) {
-                            this.renderBrokenItemStack(itemstack);
-                            this.setItemStackToSlot(EntityEquipmentSlot.HEAD, (ItemStack) null);
-                        }
-                    }
-
-                    flag = false;
-                }
-
-                if (flag) {
-                    this.extinguish();
-                }
-            }
-        }
+    @Override
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return CustomLootTable.CZOMBIE;
     }
 
     @Override

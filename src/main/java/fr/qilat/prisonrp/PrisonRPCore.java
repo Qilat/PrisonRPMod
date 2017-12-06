@@ -6,6 +6,8 @@ import fr.qilat.prisonrp.server.commands.SafeZoneCommand;
 import fr.qilat.prisonrp.server.commands.ZombieCommand;
 import fr.qilat.prisonrp.server.game.safezone.SafeZoneManager;
 import fr.qilat.prisonrp.server.utils.Logger;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;

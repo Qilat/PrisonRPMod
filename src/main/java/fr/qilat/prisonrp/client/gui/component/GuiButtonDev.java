@@ -1,6 +1,7 @@
 package fr.qilat.prisonrp.client.gui.component;
 
 import fr.qilat.prisonrp.PrisonRPCore;
+import fr.qilat.prisonrp.client.gui.GuiCustomMainMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -15,9 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiButtonDev extends GuiButton {
 
-    private static final ResourceLocation DEV_ICON = new ResourceLocation(PrisonRPCore.MODID, "textures/gui/btt_gartox.png");
+    private static final ResourceLocation DEV_ICON = new ResourceLocation(PrisonRPCore.MODID, GuiCustomMainMenu.ROOT_DIRECTORY + "btt_gartox.png");
 
-    private static final ResourceLocation DEV_HOVER_ICON = new ResourceLocation(PrisonRPCore.MODID, "textures/gui/btt_gartox_hover.png");
+    private static final ResourceLocation DEV_HOVER_ICON = new ResourceLocation(PrisonRPCore.MODID, GuiCustomMainMenu.ROOT_DIRECTORY + "btt_gartox_hover.png");
 
     public GuiButtonDev(int buttonId, int x, int y) {
         super(buttonId, x, y, 20, 20, "");

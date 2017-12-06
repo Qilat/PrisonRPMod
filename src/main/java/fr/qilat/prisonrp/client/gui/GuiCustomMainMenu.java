@@ -35,13 +35,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @SideOnly(Side.CLIENT)
 public class GuiCustomMainMenu extends GuiScreen {
-
+    public static final String ROOT_DIRECTORY = "textures/gui/mainmenu/";
     private static final AtomicInteger UNIQUE_THREAD_ID = new AtomicInteger(0);
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random RANDOM = new Random();
-    private static final ResourceLocation MUSIC_LOC = new ResourceLocation(PrisonRPCore.MODID, "404Serpents");
-    private static final ResourceLocation MINECRAFT_TITLE_TEXTURES = new ResourceLocation("prisonrp:textures/gui/title.png");
-    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation("prisonrp:textures/gui/backgroundmainmenu.png");
+    private static final ResourceLocation MINECRAFT_TITLE_TEXTURES = new ResourceLocation(PrisonRPCore.MODID, ROOT_DIRECTORY + "title.png");
+    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(PrisonRPCore.MODID,ROOT_DIRECTORY + "backgroundmainmenu.png");
     private static final String MORE_INFO_TEXT = "Please click " + TextFormatting.UNDERLINE + "here" + TextFormatting.RESET + " for more information.";
     private static final int PLAY_BTT = 100;
     private static final int OPTIONS_BTT = 0;

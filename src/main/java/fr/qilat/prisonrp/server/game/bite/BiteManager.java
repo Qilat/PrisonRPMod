@@ -1,8 +1,12 @@
-package fr.qilat.prisonrp.server.game;
+package fr.qilat.prisonrp.server.game.bite;
 
+import com.google.common.eventbus.DeadEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
@@ -14,7 +18,7 @@ import java.util.Random;
  * Created by Qilat on 28/11/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
 public class BiteManager {
-
+    private static BiteManager instance;
     private static HashMap<Bite, EntityPlayer> runningList = new HashMap<Bite, EntityPlayer>();
     private static ArrayList<Potion> effects = new ArrayList<Potion>(
             Arrays.asList(
@@ -24,6 +28,14 @@ public class BiteManager {
                     }
             )
     );
+    private BiteManager(){}
+
+    public static void init(){
+        if(instance == null) {
+            instance = new BiteManager();
+            MinecraftForge.EVENT_BUS.register(instance);
+        }
+    }
 
     public static void bite(EntityPlayer player) {
         Bite bite = new Bite(player);
@@ -36,6 +48,11 @@ public class BiteManager {
             if (entry.getValue().equals(player))
                 return true;
         return false;
+    }
+    public static void stopPlayersBite(EntityPlayer player){
+        for (Map.Entry<Bite, EntityPlayer> entry : BiteManager.runningList.entrySet())
+            if (entry.getValue().equals(player))
+                entry.getKey().stopBite();
     }
 
     public static Potion getRandomPotion() {
@@ -52,4 +69,14 @@ public class BiteManager {
         return BiteManager.runningList;
     }
 
+    @SubscribeEvent
+    public void onDeath(LivingDeathEvent event){
+        if(event.getEntity() instanceof EntityPlayer){
+            EntityPlayer player = (EntityPlayer) event.getEntity();
+            if(isPlayerAffectByBite(player)){
+
+            }
+
+        }
+    }
 }
