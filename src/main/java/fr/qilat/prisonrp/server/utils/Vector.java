@@ -216,6 +216,11 @@ public class Vector implements Cloneable {
         return this.x;
     }
 
+    public Vector setX(double x) {
+        this.x = x;
+        return this;
+    }
+
     public Vector setX(float x) {
         this.x = (double) x;
         return this;
@@ -229,6 +234,11 @@ public class Vector implements Cloneable {
         return this.y;
     }
 
+    public Vector setY(double y) {
+        this.y = y;
+        return this;
+    }
+
     public Vector setY(float y) {
         this.y = (double) y;
         return this;
@@ -240,6 +250,11 @@ public class Vector implements Cloneable {
 
     public double getZ() {
         return this.z;
+    }
+
+    public Vector setZ(double z) {
+        this.z = z;
+        return this;
     }
 
     public Vector setZ(float z) {
@@ -256,28 +271,13 @@ public class Vector implements Cloneable {
         return this;
     }
 
-    public Vector setX(double x) {
-        this.x = x;
-        return this;
-    }
-
     public Vector setY(int y) {
         this.y = (double) y;
         return this;
     }
 
-    public Vector setY(double y) {
-        this.y = y;
-        return this;
-    }
-
     public Vector setZ(int z) {
         this.z = (double) z;
-        return this;
-    }
-
-    public Vector setZ(double z) {
-        this.z = z;
         return this;
     }
 

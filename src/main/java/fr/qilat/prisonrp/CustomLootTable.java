@@ -9,7 +9,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 public class CustomLootTable {
     public static ResourceLocation CZOMBIE;
 
-    public static void init(){
+    public static void init() {
         CZOMBIE = LootTableList.register(new ResourceLocation(PrisonRPCore.MODID, "entities/czombie"));
     }
 }

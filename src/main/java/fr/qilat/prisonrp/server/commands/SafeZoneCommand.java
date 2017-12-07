@@ -51,6 +51,8 @@ public class SafeZoneCommand extends CommandBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args.length < 1)
             throw new WrongUsageException(this.getUsage(sender));
+        if (!(sender instanceof EntityPlayer))
+            throw new WrongUsageException("Impossible depuis cette entité.");
 
         String str = args[0];
 
@@ -67,6 +69,10 @@ public class SafeZoneCommand extends CommandBase {
                 id += safeZone.getId() + " ";
 
             sender.sendMessage(new TextComponentString("ID des zones disponibles : " + id));
+            EntityPlayer player = (EntityPlayer) sender;
+
+            //player.openGui();
+
         } else if (str.equals("delete")) {
             if (args.length != 2)
                 throw new WrongUsageException(this.getUsage(sender));

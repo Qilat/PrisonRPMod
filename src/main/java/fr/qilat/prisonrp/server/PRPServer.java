@@ -5,7 +5,6 @@ import fr.qilat.prisonrp.server.game.listener.BiteListener;
 import fr.qilat.prisonrp.server.game.listener.SafeZoneListener;
 import fr.qilat.prisonrp.server.game.listener.SoundListener;
 import fr.qilat.prisonrp.server.utils.Logger;
-import fr.qilat.prisonrp.server.utils.Utils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

@@ -40,7 +40,7 @@ public class GuiCustomMainMenu extends GuiScreen {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random RANDOM = new Random();
     private static final ResourceLocation MINECRAFT_TITLE_TEXTURES = new ResourceLocation(PrisonRPCore.MODID, ROOT_DIRECTORY + "title.png");
-    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(PrisonRPCore.MODID,ROOT_DIRECTORY + "backgroundmainmenu.png");
+    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(PrisonRPCore.MODID, ROOT_DIRECTORY + "backgroundmainmenu.png");
     private static final String MORE_INFO_TEXT = "Please click " + TextFormatting.UNDERLINE + "here" + TextFormatting.RESET + " for more information.";
     private static final int PLAY_BTT = 100;
     private static final int OPTIONS_BTT = 0;

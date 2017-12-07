@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.qilat.prisonrp.PrisonRPCore;
 import net.minecraft.util.math.BlockPos;
-import org.apache.commons.io.FileUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +15,9 @@ import java.util.Arrays;
 /**
  * Created by Qilat on 28/11/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
+@SideOnly(Side.SERVER)
 public class SafeZoneManager {
-    private static final String SAVE_FILE_NAME = "safezone.save";
+    private static final String SAVE_FILE_NAME = "safezone.json";
     public static final File SAVE_FILE = new File(PrisonRPCore.configDirectory, SAVE_FILE_NAME);
 
     static int currentId = 0;
@@ -24,9 +26,8 @@ public class SafeZoneManager {
     public static void load(File file) {
         try {
             File safezoneFile = file;
-            file.createNewFile();
-
-            safeZones = new ArrayList<SafeZone>(Arrays.asList(new ObjectMapper().readValue(file, SafeZone[].class)));
+            if(safezoneFile.exists())
+                safeZones = new ArrayList<SafeZone>(Arrays.asList(new ObjectMapper().readValue(file, SafeZone[].class)));
         } catch (IOException e) {
             e.printStackTrace();
         }

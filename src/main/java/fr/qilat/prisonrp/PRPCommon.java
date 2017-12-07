@@ -2,10 +2,9 @@ package fr.qilat.prisonrp;
 
 import fr.qilat.prisonrp.server.entity.EntityManager;
 import fr.qilat.prisonrp.server.game.bite.BiteManager;
+import fr.qilat.prisonrp.server.network.PacketHandler;
 import fr.qilat.prisonrp.server.utils.Logger;
 import fr.qilat.prisonrp.server.utils.task.TaskManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
@@ -28,6 +27,8 @@ public class PRPCommon {
         Logger.info("BiteManager load.");
         EntityManager.registerEntities();
         Logger.info("Entities regitered.");
+        PacketHandler.registerPackets();
+        Logger.info("Packets registered.");
     }
 
     public void postInit() {

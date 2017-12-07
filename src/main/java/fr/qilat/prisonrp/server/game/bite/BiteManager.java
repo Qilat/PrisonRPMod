@@ -1,6 +1,5 @@
 package fr.qilat.prisonrp.server.game.bite;
 
-import com.google.common.eventbus.DeadEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
@@ -28,10 +27,12 @@ public class BiteManager {
                     }
             )
     );
-    private BiteManager(){}
 
-    public static void init(){
-        if(instance == null) {
+    private BiteManager() {
+    }
+
+    public static void init() {
+        if (instance == null) {
             instance = new BiteManager();
             MinecraftForge.EVENT_BUS.register(instance);
         }
@@ -49,7 +50,8 @@ public class BiteManager {
                 return true;
         return false;
     }
-    public static void stopPlayersBite(EntityPlayer player){
+
+    public static void stopPlayersBite(EntityPlayer player) {
         for (Map.Entry<Bite, EntityPlayer> entry : BiteManager.runningList.entrySet())
             if (entry.getValue().equals(player))
                 entry.getKey().stopBite();
@@ -70,10 +72,10 @@ public class BiteManager {
     }
 
     @SubscribeEvent
-    public void onDeath(LivingDeathEvent event){
-        if(event.getEntity() instanceof EntityPlayer){
+    public void onDeath(LivingDeathEvent event) {
+        if (event.getEntity() instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) event.getEntity();
-            if(isPlayerAffectByBite(player)){
+            if (isPlayerAffectByBite(player)) {
 
             }
 

@@ -5,23 +5,17 @@ import fr.qilat.prisonrp.server.utils.UtilItem;
 import fr.qilat.prisonrp.server.utils.Utils;
 import fr.qilat.prisonrp.server.utils.task.Task;
 import fr.qilat.prisonrp.server.utils.task.TaskManager;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraftforge.common.DungeonHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import java.util.*;
 
 /**
@@ -193,9 +187,9 @@ public class Drop {
     }
 
     private void setChestInv(Location loc) {
-        if(loc.getWorld().getTileEntity(loc.getBlockPos()) instanceof TileEntityChest) {
+        if (loc.getWorld().getTileEntity(loc.getBlockPos()) instanceof TileEntityChest) {
             TileEntityChest tileEntityChest = (TileEntityChest) loc.getWorld().getTileEntity(loc.getBlockPos());
-            for(int i = 0; i < 26; i++){
+            for (int i = 0; i < 26; i++) {
                 if (random.nextInt(LOOT_RATE * 3) < LOOT_RATE) {
                     tileEntityChest.setInventorySlotContents(i, loots.get(random.nextInt(loots.size())).copy());
                 }

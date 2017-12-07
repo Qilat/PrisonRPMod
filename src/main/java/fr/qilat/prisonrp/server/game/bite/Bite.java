@@ -3,7 +3,6 @@ package fr.qilat.prisonrp.server.game.bite;
 import fr.qilat.prisonrp.server.utils.task.Task;
 import fr.qilat.prisonrp.server.utils.task.TaskManager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.fml.relauncher.Side;
 

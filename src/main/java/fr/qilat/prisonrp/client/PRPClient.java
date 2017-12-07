@@ -1,9 +1,9 @@
 package fr.qilat.prisonrp.client;
 
 import fr.qilat.prisonrp.PRPCommon;
-import fr.qilat.prisonrp.PrisonRPCore;
 import fr.qilat.prisonrp.PrisonRPItems;
 import fr.qilat.prisonrp.client.listener.GuiListener;
+import fr.qilat.prisonrp.client.listener.InputListener;
 import fr.qilat.prisonrp.client.listener.RenderListener;
 import fr.qilat.prisonrp.server.entity.EntityManager;
 import fr.qilat.prisonrp.server.utils.Logger;
@@ -31,15 +31,18 @@ public class PRPClient extends PRPCommon {
         super.init();
 
         EntityManager.registerAllEntityModels();
+        Logger.info("EntityModels load.");
 
-        Logger.info("Loading Listener");
         MinecraftForge.EVENT_BUS.register(new GuiListener());
         MinecraftForge.EVENT_BUS.register(new RenderListener());
-
+        MinecraftForge.EVENT_BUS.register(new InputListener());
+        Logger.info("Listeners load.");
     }
 
     @Override
     public void postInit() {
         super.postInit();
     }
+
+
 }
