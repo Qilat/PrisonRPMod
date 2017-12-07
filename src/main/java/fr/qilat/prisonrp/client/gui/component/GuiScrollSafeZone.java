@@ -1,14 +1,11 @@
 package fr.qilat.prisonrp.client.gui.component;
 
-import fr.qilat.prisonrp.PrisonRPCore;
 import fr.qilat.prisonrp.client.gui.GuiSafeZone;
 import fr.qilat.prisonrp.server.game.safezone.SafeZone;
 import fr.qilat.prisonrp.server.network.SafeZoneNetworkHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiListExtended;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +51,6 @@ public class GuiScrollSafeZone extends GuiListExtended {
     protected boolean isSelected(int slotIndex) {
         return slotIndex == this.selectedSlotIndex;
     }
-
 
 
     public int getSelected() {

@@ -2,13 +2,11 @@ package fr.qilat.prisonrp.client.gui;
 
 import fr.qilat.prisonrp.PrisonRPCore;
 import fr.qilat.prisonrp.client.gui.component.GuiScrollSafeZone;
-import fr.qilat.prisonrp.server.game.safezone.SafeZone;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 
 /**
  * Created by Qilat on 06/12/2017 for forge-1.10.2-12.18.3.2511-mdk.
@@ -17,11 +15,12 @@ public class GuiSafeZone extends GuiContainer {
     public static final String ROOT_DIRECTORY = "textures/gui/safezone/";
     public static ResourceLocation DEFAULT_BACKGROUND;
 
-    static{
+    static {
         DEFAULT_BACKGROUND = new ResourceLocation(PrisonRPCore.MODID, ROOT_DIRECTORY + "defaultbackground.png");
     }
 
     public GuiScrollSafeZone guiScrollSafeZone;
+
     public GuiSafeZone() {
         super(new Container() {
             @Override

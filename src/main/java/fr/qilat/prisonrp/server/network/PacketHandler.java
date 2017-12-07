@@ -2,6 +2,7 @@ package fr.qilat.prisonrp.server.network;
 
 import fr.qilat.prisonrp.PrisonRPCore;
 import fr.qilat.prisonrp.server.network.packets.SafeZonePacket;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -24,7 +25,11 @@ public class PacketHandler extends SimpleNetworkWrapper {
 
     }
 
-    public static void sendPacket(IMessage message) {
+    public static void sendPacketToServer(IMessage message) {
         INSTANCE.sendToServer(message);
+    }
+
+    public static void sendPacketToPlayer(IMessage message, EntityPlayerMP player) {
+        INSTANCE.sendTo(message, player);
     }
 }

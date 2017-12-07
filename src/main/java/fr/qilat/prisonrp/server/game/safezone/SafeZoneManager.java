@@ -26,7 +26,7 @@ public class SafeZoneManager {
     public static void load(File file) {
         try {
             File safezoneFile = file;
-            if(safezoneFile.exists())
+            if (safezoneFile.exists())
                 safeZones = new ArrayList<SafeZone>(Arrays.asList(new ObjectMapper().readValue(file, SafeZone[].class)));
         } catch (IOException e) {
             e.printStackTrace();

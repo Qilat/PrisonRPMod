@@ -9,37 +9,44 @@ import fr.qilat.prisonrp.server.game.safezone.SafeZoneManager;
 import fr.qilat.prisonrp.server.network.SafeZoneNetworkHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 import scala.actors.threadpool.Arrays;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Qilat on 06/12/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
 public class SafeZonePacket implements IMessage {
+
+    private String uuid;
     private From side;
     private String json = null;
+
     public SafeZonePacket() {
     }
 
-    public SafeZonePacket(From side, String json) {
+    public SafeZonePacket(UUID uuid, From side, String json) {
+        this.uuid = uuid.toString();
         this.side = side;
         this.json = json;
     }
 
     public SafeZonePacket(From side) {
-        this(side, null);
+        this(null, side, "");
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        String toSend = Joiner.on('#').join(side.toString(), json != null ? json : "");
+        String toSend = Joiner.on('#').join(uuid, side.toString(), json != null ? json : "");
         buf.writeBytes(toSend.getBytes());
     }
 
@@ -50,9 +57,11 @@ public class SafeZonePacket implements IMessage {
         List<String> list = Splitter.on('#').splitToList(received);
 
         if (list.size() > 0)
-            this.side = From.valueOf(list.get(0));
+            this.uuid = list.get(0);
         if (list.size() > 1)
-            this.json = list.get(1);
+            this.side = From.valueOf(list.get(1));
+        if (list.size() > 2)
+            this.json = list.get(2);
     }
 
     public enum From {
@@ -60,26 +69,28 @@ public class SafeZonePacket implements IMessage {
         CLIENT
     }
 
-    public static class SafeZonePacketHandler implements IMessageHandler<SafeZonePacket, IMessage> {
+    public static class SafeZonePacketHandler implements IMessageHandler<SafeZonePacket, SafeZonePacket> {
 
         @Override
-        public IMessage onMessage(SafeZonePacket message, MessageContext ctx) {
+        public SafeZonePacket onMessage(SafeZonePacket message, MessageContext ctx) {
             System.out.println("packet received side :" + message.side);
             switch (message.side) {
                 case SERVER:
                     try {
-                        SafeZoneNetworkHandler.setZones(new ArrayList<SafeZone>(Arrays.asList(new ObjectMapper().readValue(message.json, SafeZone[].class))));
+                        if (FMLCommonHandler.instance().getEffectiveSide().isClient()
+                                && Minecraft.getMinecraft().player.getUniqueID().equals(UUID.fromString(message.uuid)))
+                            SafeZoneNetworkHandler.setZones(new ArrayList<SafeZone>(Arrays.asList(new ObjectMapper().readValue(message.json, SafeZone[].class))));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
                 case CLIENT:
-                    try {
-                        if(!Minecraft.getMinecraft().world.isRemote)
-                            return new SafeZonePacket(From.CLIENT, new ObjectMapper().writeValueAsString(SafeZoneManager.getSafeZones().toArray()));
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
+                    if (FMLCommonHandler.instance().getEffectiveSide().equals(Side.SERVER))
+                        try {
+                            return new SafeZonePacket(UUID.fromString(message.uuid), From.SERVER, new ObjectMapper().writeValueAsString(SafeZoneManager.getSafeZones().toArray()));
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                        }
                     break;
             }
             return null;
