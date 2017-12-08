@@ -1,6 +1,6 @@
 package fr.qilat.prisonrp.server.network;
 
-import fr.qilat.prisonrp.client.gui.GuiSafeZone;
+import fr.qilat.prisonrp.client.gui.GuiSfz;
 import fr.qilat.prisonrp.server.game.safezone.SafeZone;
 import fr.qilat.prisonrp.server.network.packets.SafeZonePacket;
 import net.minecraft.client.Minecraft;
@@ -25,12 +25,12 @@ public class SafeZoneNetworkHandler {
         SafeZoneNetworkHandler.zones = zones;
     }
 
-    public static void loadZones(boolean openGUI) {
+    public static void loadZones() {
         PacketHandler.sendPacketToServer(new SafeZonePacket(Minecraft.getMinecraft().player.getUniqueID(), SafeZonePacket.From.CLIENT, "", true));
     }
 
     public static void zonesLoaded(boolean openGUI) {
         if (openGUI)
-            Minecraft.getMinecraft().displayGuiScreen(new GuiSafeZone());
+            Minecraft.getMinecraft().displayGuiScreen(new GuiSfz());
     }
 }

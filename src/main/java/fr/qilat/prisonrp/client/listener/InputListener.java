@@ -2,6 +2,7 @@ package fr.qilat.prisonrp.client.listener;
 
 import fr.qilat.prisonrp.PrisonRPCore;
 import fr.qilat.prisonrp.server.network.SafeZoneNetworkHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -38,7 +39,8 @@ public class InputListener {
     }
 
     private void keyTestTyped() {
-        SafeZoneNetworkHandler.loadZones(true);
+        Minecraft.getMinecraft().player.sendChatMessage("Récupéreration des informations concernant les SafeZones... Veuillez patienter...");
+        SafeZoneNetworkHandler.loadZones();
     }
 
 

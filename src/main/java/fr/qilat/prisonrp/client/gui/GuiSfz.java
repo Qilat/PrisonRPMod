@@ -7,6 +7,10 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
+import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
 
 /**
  * Created by Qilat on 08/12/2017 for forge-1.10.2-12.18.3.2511-mdk.
@@ -33,7 +37,8 @@ public class GuiSfz extends GuiScreen {
 
     @Override
     public void initGui() {
-        super.initGui();
+        Keyboard.enableRepeatEvents(true);
+
         if (!SafeZoneNetworkHandler.getZones().isEmpty()) {
             firstIDShown = SafeZoneNetworkHandler.getZones().get(0).getId();
         }
@@ -41,12 +46,27 @@ public class GuiSfz extends GuiScreen {
         insideLeft = this.width / 2 - GuiSfz.entryWidth / 2 + 2;
         insideTop = this.height / 2 - 256 / 2 + 4;
 
+        int yPos = insideTop + topPadding;
+        this.firstEntry = new GuiSafeZoneEntry(insideLeft, yPos, entryWidth, entryHeight);
+        yPos = insideTop + GuiSfz.entryHeight + topPadding;
+        this.secondEntry = new GuiSafeZoneEntry(insideLeft, yPos, entryWidth, entryHeight);
+        yPos = insideTop + 2 * GuiSfz.entryHeight + topPadding;
+        this.thirdEntry = new GuiSafeZoneEntry(insideLeft, yPos, entryWidth, entryHeight);
+        yPos = insideTop + 3 * GuiSfz.entryHeight + topPadding;
+        this.fourthEntry = new GuiSafeZoneEntry(insideLeft, yPos, entryWidth, entryHeight);
+
+        this.firstEntry.initGui();
+        this.secondEntry.initGui();
+        this.thirdEntry.initGui();
+        this.fourthEntry.initGui();
+
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
         this.drawDefaultBackground();
+
 
         this.firstEntry.setSafeZone(SafeZoneNetworkHandler.getZones().get(GuiSfz.firstIDShown));
         this.secondEntry.setSafeZone(SafeZoneNetworkHandler.getZones().get(GuiSfz.firstIDShown + 1));
@@ -57,39 +77,69 @@ public class GuiSfz extends GuiScreen {
 
     }
 
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
+
+        this.firstEntry.textboxKeyTyped(typedChar, keyCode);
+        this.secondEntry.textboxKeyTyped(typedChar, keyCode);
+        this.thirdEntry.textboxKeyTyped(typedChar, keyCode);
+        this.fourthEntry.textboxKeyTyped(typedChar, keyCode);
+
+        if (keyCode == 15) {
+            if(this.firstEntry.isFocused()) this.firstEntry.nextFocus();
+            if(this.secondEntry.isFocused()) this.secondEntry.nextFocus();
+            if(this.thirdEntry.isFocused()) this.thirdEntry.nextFocus();
+            if(this.fourthEntry.isFocused()) this.fourthEntry.nextFocus();
+        }
+
+        if (keyCode == 28 || keyCode == 156)
+        {
+            //TODO SAVE
+        }
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        this.firstEntry.mouseClicked(mouseX, mouseY, mouseButton);
+        this.secondEntry.mouseClicked(mouseX, mouseY, mouseButton);
+        this.thirdEntry.mouseClicked(mouseX, mouseY, mouseButton);
+        this.fourthEntry.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
     private void drawEntries() {
-
-        int yPos = insideTop + topPadding;
-        this.firstEntry.drawEntry(insideLeft, yPos, entryWidth, entryHeight);
-
-        yPos = insideTop + GuiSfz.entryHeight + topPadding;
-        this.secondEntry.drawEntry(insideLeft, yPos, entryWidth, entryHeight);
-
-        yPos = insideTop + 2 * GuiSfz.entryHeight + topPadding;
-        this.thirdEntry.drawEntry(insideLeft, yPos, entryWidth, entryHeight);
-
-        yPos = insideTop + 3 * GuiSfz.entryHeight + topPadding;
-        this.fourthEntry.drawEntry(insideLeft, yPos, entryWidth, entryHeight);
+        if (this.firstEntry != null)
+            this.firstEntry.drawEntry();
+        if (this.secondEntry != null)
+            this.secondEntry.drawEntry();
+        if (this.thirdEntry != null)
+            this.thirdEntry.drawEntry();
+        if (this.fourthEntry != null)
+            this.fourthEntry.drawEntry();
     }
 
     @Override
     public void updateScreen() {
         super.updateScreen();
         this.updateCursorPos();
-
     }
 
-    private void updateCursorPos(){
-        this.firstEntry.updateCursorPos();
-        this.secondEntry.updateCursorPos();
-        this.thirdEntry.updateCursorPos();
-        this.fourthEntry.updateCursorPos();
+    private void updateCursorPos() {
+        if (this.firstEntry != null)
+            this.firstEntry.updateCursorPos();
+        if (this.secondEntry != null)
+            this.secondEntry.updateCursorPos();
+        if (this.thirdEntry != null)
+            this.thirdEntry.updateCursorPos();
+        if (this.fourthEntry != null)
+            this.fourthEntry.updateCursorPos();
     }
 
     @Override
     public void onGuiClosed() {
-        super.onGuiClosed();
-        //update value
+        Keyboard.enableRepeatEvents(false);
+        //TODO update value
     }
 
     @Override
@@ -98,5 +148,5 @@ public class GuiSfz extends GuiScreen {
         this.mc.getTextureManager().bindTexture(DEFAULT_BACKGROUND);
         Gui.drawScaledCustomSizeModalRect(this.width / 2 - 256 / 2, this.height / 2 - 256 / 2, 0, 0, 1, 1, 256, 256, 1, 1);
     }
-    
+
 }
