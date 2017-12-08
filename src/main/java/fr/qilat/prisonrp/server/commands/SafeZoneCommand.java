@@ -71,7 +71,7 @@ public class SafeZoneCommand extends CommandBase {
             sender.sendMessage(new TextComponentString("ID des zones disponibles : " + id));
             EntityPlayer player = (EntityPlayer) sender;
 
-            //player.openGui();
+            //TODO player.openGui();
 
         } else if (str.equals("delete")) {
             if (args.length != 2)

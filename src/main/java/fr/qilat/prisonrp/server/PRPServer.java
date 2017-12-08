@@ -34,7 +34,7 @@ public class PRPServer extends PRPCommon {
     @Override
     public void postInit() {
         super.postInit();
-        //TODO launch drop
+
         Logger.info("Server post-init");
     }
 

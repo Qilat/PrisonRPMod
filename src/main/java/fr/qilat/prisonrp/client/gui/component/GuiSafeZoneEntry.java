@@ -1,126 +1,118 @@
 package fr.qilat.prisonrp.client.gui.component;
 
-import fr.qilat.prisonrp.client.gui.GuiSafeZone;
 import fr.qilat.prisonrp.server.game.safezone.SafeZone;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiListExtended;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.gui.GuiTextField;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.*;
 
 /**
  * Created by Qilat on 06/12/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
-public class GuiSafeZoneEntry implements GuiListExtended.IGuiListEntry {
-    private static final ResourceLocation UNKNOWN_SERVER = new ResourceLocation("textures/misc/unknown_server.png");
-    private static final ResourceLocation SERVER_SELECTION_BUTTONS = new ResourceLocation("textures/gui/server_selection.png");
-    private final GuiSafeZone owner;
-    private final Minecraft mc;
-    private final SafeZone safeZone;
+public class GuiSafeZoneEntry {
+    private static int fieldWidth = 40;
+    private static int fieldHeight = 10;
 
-    protected GuiSafeZoneEntry(GuiSafeZone guiSafeZone, SafeZone safeZone) {
-        this.owner = guiSafeZone;
-        this.safeZone = safeZone;
+    private static int intervalX = 4;
+    private static int intervalY = 4;
+
+    private static int fontHeight = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
+
+    private int baseX;
+    private int baseY;
+
+    private int oldId = -1;
+    private Minecraft mc;
+    private SafeZone safeZone;
+
+    private GuiTextField pos1x;
+    private GuiTextField pos1y;
+    private GuiTextField pos1z;
+    private GuiTextField pos2x;
+    private GuiTextField pos2y;
+    private GuiTextField pos2z;
+
+    GuiSafeZoneEntry(int x, int y) {
         this.mc = Minecraft.getMinecraft();
+        this.baseX = x + 3;
+        this.baseY = y + 3;
+
     }
 
-    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
+    public void initGui() {
+        this.pos1x = new GuiTextField(0, this.mc.fontRendererObj, baseX + 0 * fieldWidth + 1 * intervalX, baseY + fontHeight + intervalY, fieldWidth, fieldHeight);
+        this.pos1y = new GuiTextField(1, this.mc.fontRendererObj, baseX + 1 * fieldWidth + 2 * intervalX, baseY + fontHeight + intervalY, fieldWidth, fieldHeight);
+        this.pos1z = new GuiTextField(2, this.mc.fontRendererObj, baseX + 2 * fieldWidth + 3 * intervalX, baseY + fontHeight + intervalY, fieldWidth, fieldHeight);
+        this.pos2x = new GuiTextField(3, this.mc.fontRendererObj, baseX + 0 * fieldWidth + 1 * intervalX, baseY + fontHeight + 2 * intervalY + fieldHeight, fieldWidth, fieldHeight);
+        this.pos2y = new GuiTextField(4, this.mc.fontRendererObj, baseX + 1 * fieldWidth + 2 * intervalX, baseY + fontHeight + 2 * intervalY + fieldHeight, fieldWidth, fieldHeight);
+        this.pos2z = new GuiTextField(5, this.mc.fontRendererObj, baseX + 2 * fieldWidth + 3 * intervalX, baseY + fontHeight + 2 * intervalY + fieldHeight, fieldWidth, fieldHeight);
 
-        this.mc.fontRendererObj.drawString("Id" + Integer.toString(this.safeZone.getId()), x + 32 + 3, y + 1, 16777215);
-        List<String> list = new ArrayList<String>();
-        list.add("POS 1 : x =" + this.safeZone.getPos1X() + " z = " + this.safeZone.getPos1Z());
-        list.add("POS 2 : x =" + this.safeZone.getPos2X() + " z = " + this.safeZone.getPos2Z());
-
-        for (int i = 0; i < Math.min(list.size(), 2); ++i) {
-            this.mc.fontRendererObj.drawString(list.get(i), x + 32 + 3, y + 12 + this.mc.fontRendererObj.FONT_HEIGHT * i, 8421504);
-        }
-
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-
-        this.drawTextureAt(x, y, UNKNOWN_SERVER);
-
-        if (this.mc.gameSettings.touchscreen || isSelected) {
-            this.mc.getTextureManager().bindTexture(SERVER_SELECTION_BUTTONS);
-            Gui.drawRect(x, y, x + 32, y + 32, -1601138544);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            int k1 = mouseX - x;
-            int l1 = mouseY - y;
-
-            if (this.canJoin()) {
-                if (k1 < 32 && k1 > 16) {
-                    Gui.drawModalRectWithCustomSizedTexture(x, y, 0.0F, 32.0F, 32, 32, 256.0F, 256.0F);
-                } else {
-                    Gui.drawModalRectWithCustomSizedTexture(x, y, 0.0F, 0.0F, 32, 32, 256.0F, 256.0F);
-                }
-            }
+        if (getSafeZone() != null) {
+            setTextFiledContent();
         }
     }
 
-    protected void drawTextureAt(int p_178012_1_, int p_178012_2_, ResourceLocation p_178012_3_) {
-        this.mc.getTextureManager().bindTexture(p_178012_3_);
-        GlStateManager.enableBlend();
-        Gui.drawModalRectWithCustomSizedTexture(p_178012_1_, p_178012_2_, 0.0F, 0.0F, 32, 32, 32.0F, 32.0F);
-        GlStateManager.disableBlend();
+    private void setTextFiledContent() {
+        this.pos1x.setText(String.valueOf(getSafeZone().getPos1X()));
+        this.pos1y.setText(String.valueOf(getSafeZone().getPos1Y()));
+        this.pos1z.setText(String.valueOf(getSafeZone().getPos1Z()));
+
+        this.pos2x.setText(String.valueOf(getSafeZone().getPos2X()));
+        this.pos2y.setText(String.valueOf(getSafeZone().getPos2Y()));
+        this.pos2z.setText(String.valueOf(getSafeZone().getPos2Z()));
     }
 
-    private boolean canJoin() {
-        return true;
+    private void drawTextField() {
+        this.pos1x.drawTextBox();
+        this.pos1y.drawTextBox();
+        this.pos1z.drawTextBox();
+
+        this.pos2x.drawTextBox();
+        this.pos2y.drawTextBox();
+        this.pos2z.drawTextBox();
     }
 
+    public void drawEntry(int x, int y, int listWidth, int slotHeight) {
+        if(this.safeZone != null) {
+            int rectHeight = slotHeight;
+            int rectWidth = listWidth * 75 / 100;
 
-    /**
-     * Called when the mouse is clicked within this entry. Returning true means that something within this entry was
-     * clicked and the list should not be dragged.
-     */
-    public boolean mousePressed(int slotIndex, int mouseX, int mouseY, int mouseEvent, int relativeX, int relativeY) {
-        /*if (relativeX <= 32)
-        {
-            if (relativeX < 32 && relativeX > 16 && this.canJoin())
-            {
-                //this.owner.selectServer(slotIndex);
-                //this.owner.connectToSelected();
-                return true;
+            Gui.drawRect(x, y + 1, x + rectWidth, y + rectHeight - 1, new Color(100, 100, 100).getRGB());
+            this.mc.fontRendererObj.drawString("ID n°" + Integer.toString(this.safeZone.getId()) + " : Undefined name", baseX, baseY, new Color(255, 255, 255).getRGB());
+
+            if (getSafeZone() != null
+                    && this.oldId != getSafeZone().getId()) {
+                this.setTextFiledContent();
+                this.oldId = this.getSafeZone().getId();
             }
 
-            if (relativeX < 16 && relativeY < 16 && this.owner.canMoveUp(this, slotIndex))
-            {
-                this.owner.moveServerUp(this, slotIndex, GuiScreen.isShiftKeyDown());
-                return true;
-            }
-
-            if (relativeX < 16 && relativeY > 16 && this.owner.canMoveDown(this, slotIndex))
-            {
-                this.owner.moveServerDown(this, slotIndex, GuiScreen.isShiftKeyDown());
-                return true;
-            }
+            this.drawTextField();
         }
-
-        this.owner.selectServer(slotIndex);
-
-        if (Minecraft.getSystemTime() - this.lastClickTime < 250L)
-        {
-            this.owner.connectToSelected();
-        }
-
-        this.lastClickTime = Minecraft.getSystemTime();*/
-        return false;
     }
 
-    public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {
+    public void updateCursorPos() {
+        if (this.pos1x != null)
+            this.pos1x.updateCursorCounter();
+        if (this.pos1y != null)
+            this.pos1y.updateCursorCounter();
+        if (this.pos1z != null)
+            this.pos1z.updateCursorCounter();
+
+        if (this.pos2x != null)
+            this.pos2x.updateCursorCounter();
+        if (this.pos2y != null)
+            this.pos2y.updateCursorCounter();
+        if (this.pos2z != null)
+            this.pos2z.updateCursorCounter();
     }
 
-    /**
-     * Fired when the mouse button is released. Arguments: index, x, y, mouseEvent, relativeX, relativeY
-     */
-    public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
-    }
-
-    public SafeZone getSafeZone() {
+    private SafeZone getSafeZone() {
         return this.safeZone;
     }
 
-
+    public void setSafeZone(SafeZone zone) {
+        if (this.oldId != zone.getId())
+            this.safeZone = zone;
+    }
 }

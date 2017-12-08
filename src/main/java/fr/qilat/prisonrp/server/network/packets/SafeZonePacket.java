@@ -30,23 +30,25 @@ public class SafeZonePacket implements IMessage {
     private String uuid;
     private From side;
     private String json = null;
+    private boolean openGui = false;
 
     public SafeZonePacket() {
     }
 
-    public SafeZonePacket(UUID uuid, From side, String json) {
+    public SafeZonePacket(UUID uuid, From side, String json, boolean openGui) {
         this.uuid = uuid.toString();
         this.side = side;
         this.json = json;
+        this.openGui = openGui;
     }
 
     public SafeZonePacket(From side) {
-        this(null, side, "");
+        this(null, side, "", false);
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        String toSend = Joiner.on('#').join(uuid, side.toString(), json != null ? json : "");
+        String toSend = Joiner.on('#').join(uuid, side.toString(), json != null ? json : "", openGui);
         buf.writeBytes(toSend.getBytes());
     }
 
@@ -62,6 +64,8 @@ public class SafeZonePacket implements IMessage {
             this.side = From.valueOf(list.get(1));
         if (list.size() > 2)
             this.json = list.get(2);
+        if (list.size() > 3)
+            this.openGui = (list.get(3) != null && Boolean.parseBoolean(list.get(3)));
     }
 
     public enum From {
@@ -73,13 +77,14 @@ public class SafeZonePacket implements IMessage {
 
         @Override
         public SafeZonePacket onMessage(SafeZonePacket message, MessageContext ctx) {
-            System.out.println("packet received side :" + message.side);
             switch (message.side) {
                 case SERVER:
                     try {
                         if (FMLCommonHandler.instance().getEffectiveSide().isClient()
-                                && Minecraft.getMinecraft().player.getUniqueID().equals(UUID.fromString(message.uuid)))
+                                && Minecraft.getMinecraft().player.getUniqueID().equals(UUID.fromString(message.uuid))) {
                             SafeZoneNetworkHandler.setZones(new ArrayList<SafeZone>(Arrays.asList(new ObjectMapper().readValue(message.json, SafeZone[].class))));
+                            SafeZoneNetworkHandler.zonesLoaded(message.openGui);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -87,7 +92,7 @@ public class SafeZonePacket implements IMessage {
                 case CLIENT:
                     if (FMLCommonHandler.instance().getEffectiveSide().equals(Side.SERVER))
                         try {
-                            return new SafeZonePacket(UUID.fromString(message.uuid), From.SERVER, new ObjectMapper().writeValueAsString(SafeZoneManager.getSafeZones().toArray()));
+                            return new SafeZonePacket(UUID.fromString(message.uuid), From.SERVER, new ObjectMapper().writeValueAsString(SafeZoneManager.getSafeZones().toArray()), message.openGui);
                         } catch (JsonProcessingException e) {
                             e.printStackTrace();
                         }

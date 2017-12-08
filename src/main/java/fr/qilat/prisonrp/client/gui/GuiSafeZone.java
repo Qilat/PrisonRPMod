@@ -1,12 +1,15 @@
 package fr.qilat.prisonrp.client.gui;
 
 import fr.qilat.prisonrp.PrisonRPCore;
+import fr.qilat.prisonrp.client.gui.component.GuiSafeZoneEntry;
 import fr.qilat.prisonrp.client.gui.component.GuiScrollSafeZone;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Qilat on 06/12/2017 for forge-1.10.2-12.18.3.2511-mdk.
@@ -19,6 +22,7 @@ public class GuiSafeZone extends GuiContainer {
         DEFAULT_BACKGROUND = new ResourceLocation(PrisonRPCore.MODID, ROOT_DIRECTORY + "defaultbackground.png");
     }
 
+    public List<GuiSafeZoneEntry> list = new ArrayList<GuiSafeZoneEntry>();
     public GuiScrollSafeZone guiScrollSafeZone;
 
     public GuiSafeZone() {
@@ -33,8 +37,7 @@ public class GuiSafeZone extends GuiContainer {
     @Override
     public void initGui() {
         super.initGui();
-        this.guiScrollSafeZone = new GuiScrollSafeZone(this, this.mc, this.width, this.height, 32, this.height - 64, 36);
-
+        this.guiScrollSafeZone = new GuiScrollSafeZone(this, this.mc, this.width, this.height, this.height / 2 - 256 / 2, this.height / 2 + 256 / 2, 50);
     }
 
     @Override
@@ -46,17 +49,20 @@ public class GuiSafeZone extends GuiContainer {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(DEFAULT_BACKGROUND);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
+    }
+
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        //update value
     }
 
     @Override
     public void updateScreen() {
         super.updateScreen();
         this.guiScrollSafeZone.updateSafeZones();
+        for (GuiSafeZoneEntry guiSafeZoneEntry : this.guiScrollSafeZone.getSafeZoneList())
+            guiSafeZoneEntry.updateCursorPos();
     }
 
 
