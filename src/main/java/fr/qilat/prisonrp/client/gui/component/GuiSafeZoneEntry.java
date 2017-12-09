@@ -4,14 +4,16 @@ import fr.qilat.prisonrp.client.gui.GuiSfz;
 import fr.qilat.prisonrp.server.game.safezone.SafeZone;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 
 /**
  * Created by Qilat on 06/12/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
+@SideOnly(Side.CLIENT)
 public class GuiSafeZoneEntry {
 
     private static int fontHeight = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
@@ -55,7 +57,7 @@ public class GuiSafeZoneEntry {
         int baseX = this.baseX + 2;
         int baseY = this.baseY + 5;
 
-        this.name = new GuiTextField(6, this.mc.fontRendererObj, baseX + 48, baseY - 1, fieldWidth * 17/8 + 1, fieldHeight); // 1/8
+        this.name = new GuiTextField(6, this.mc.fontRendererObj, baseX + 48, baseY - 1, fieldWidth * 17 / 8 + 1, fieldHeight); // 1/8
         this.pos1x = new GuiTextField(0, this.mc.fontRendererObj, baseX + 0 * fieldWidth + 1 * intervalX, baseY + fontHeight + intervalY, fieldWidth, fieldHeight);
         this.pos1y = new GuiTextField(1, this.mc.fontRendererObj, baseX + 1 * fieldWidth + 2 * intervalX, baseY + fontHeight + intervalY, fieldWidth, fieldHeight);
         this.pos1z = new GuiTextField(2, this.mc.fontRendererObj, baseX + 2 * fieldWidth + 3 * intervalX, baseY + fontHeight + intervalY, fieldWidth + 2, fieldHeight);
@@ -69,7 +71,7 @@ public class GuiSafeZoneEntry {
 
         baseX += 2;
         baseY -= 2;
-        this.buttonSaveSFZ = new GuiButtonSaveSFZ(7, baseX  + 3 * fieldWidth + 4 * intervalX, baseY );
+        this.buttonSaveSFZ = new GuiButtonSaveSFZ(7, baseX + 3 * fieldWidth + 4 * intervalX, baseY);
         this.buttonDelSFZ = new GuiButtonDelSFZ(8, baseX + 3 * fieldWidth + 4 * intervalX, baseY + 23);
 
         this.owner.addButton(this.buttonSaveSFZ);
@@ -120,7 +122,7 @@ public class GuiSafeZoneEntry {
     }
 
     public void updateCursorPos() {
-        if(this.name != null)
+        if (this.name != null)
             this.name.updateCursorCounter();
 
         if (this.pos1x != null)
@@ -138,7 +140,7 @@ public class GuiSafeZoneEntry {
             this.pos2z.updateCursorCounter();
     }
 
-    private SafeZone getSafeZone() {
+    public SafeZone getSafeZone() {
         return this.safeZone;
     }
 
@@ -178,31 +180,25 @@ public class GuiSafeZoneEntry {
     }
 
     public void nextFocus() {
-        if(this.name.isFocused()){
+        if (this.name.isFocused()) {
             this.name.setFocused(false);
             this.pos1x.setFocused(true);
-        }
-        if(this.pos1x.isFocused()){
+        } else if (this.pos1x.isFocused()) {
             this.pos1x.setFocused(false);
             this.pos1y.setFocused(true);
-        }
-        if(this.pos1y.isFocused()){
+        } else if (this.pos1y.isFocused()) {
             this.pos1y.setFocused(false);
             this.pos1z.setFocused(true);
-        }
-        if(this.pos1z.isFocused()){
+        } else if (this.pos1z.isFocused()) {
             this.pos1z.setFocused(false);
             this.pos2x.setFocused(true);
-        }
-        if(this.pos2x.isFocused()){
+        } else if (this.pos2x.isFocused()) {
             this.pos2x.setFocused(false);
             this.pos2y.setFocused(true);
-        }
-        if(this.pos2y.isFocused()){
+        } else if (this.pos2y.isFocused()) {
             this.pos2y.setFocused(false);
             this.pos2z.setFocused(true);
-        }
-        if(this.pos2z.isFocused()){
+        } else if (this.pos2z.isFocused()) {
             this.pos2z.setFocused(false);
             this.name.setFocused(true);
         }

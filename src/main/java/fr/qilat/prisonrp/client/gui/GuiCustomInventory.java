@@ -13,12 +13,15 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
 
 /**
  * Created by Qilat on 25/11/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
+@SideOnly(Side.CLIENT)
 public class GuiCustomInventory extends InventoryEffectRenderer {
 
     public GuiCustomInventory(EntityPlayer player) {

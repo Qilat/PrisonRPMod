@@ -8,6 +8,8 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.List;
 /**
  * Created by Qilat on 28/11/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
+@SideOnly(Side.SERVER)
 public class ZombieCommand extends CommandBase {
     public static final String NAME = "zombie";
     public static final String USAGE = "/zombie <nombre | defaut = 1>";

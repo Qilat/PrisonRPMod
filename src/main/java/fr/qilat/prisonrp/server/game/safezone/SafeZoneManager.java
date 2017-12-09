@@ -35,10 +35,7 @@ public class SafeZoneManager {
     }
 
     public static void setupCurrentID() {
-        for (SafeZone safeZone : safeZones) {
-            if (safeZone.getId() > currentId)
-                currentId = safeZone.getId();
-        }
+        currentId = safeZones.size();
     }
 
     public static void save(File file) {

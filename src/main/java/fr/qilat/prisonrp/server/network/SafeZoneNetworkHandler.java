@@ -33,4 +33,15 @@ public class SafeZoneNetworkHandler {
         if (openGUI)
             Minecraft.getMinecraft().displayGuiScreen(new GuiSfz());
     }
+
+    public static SafeZone[] getNextSafeZones(int amount, int firstID) {
+        SafeZone[] toReturn = new SafeZone[amount];
+
+        for (int i = 0; i < amount; i++) {
+            if (zones.size() >= firstID + i)
+                toReturn[i] = zones.get(firstID + i);
+        }
+
+        return toReturn;
+    }
 }

@@ -6,6 +6,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import fr.qilat.prisonrp.server.game.safezone.SafeZone;
 import fr.qilat.prisonrp.server.game.safezone.SafeZoneManager;
+import fr.qilat.prisonrp.server.network.PacketHandler;
 import fr.qilat.prisonrp.server.network.SafeZoneNetworkHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.actors.threadpool.Arrays;
 
 import java.io.IOException;
@@ -44,6 +46,15 @@ public class SafeZonePacket implements IMessage {
 
     public SafeZonePacket(From side) {
         this(null, side, "", false);
+    }
+
+    @SideOnly(Side.SERVER)
+    public static void sendSafeZoneToPlayer(UUID player, boolean openGui) {
+        try {
+            PacketHandler.sendPacketToPlayer(new SafeZonePacket(player, From.SERVER, new ObjectMapper().writeValueAsString(SafeZoneManager.getSafeZones().toArray()), openGui), FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(player));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

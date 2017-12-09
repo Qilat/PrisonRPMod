@@ -1,13 +1,8 @@
 package fr.qilat.prisonrp.client.gui.component;
 
-import fr.qilat.prisonrp.PrisonRPCore;
-import fr.qilat.prisonrp.client.gui.GuiCustomMainMenu;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiBeacon;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,8 +19,7 @@ public class GuiButtonDelSFZ extends GuiButton {
     private final int iconY;
     private boolean selected;
 
-    protected GuiButtonDelSFZ(int buttonId, int x, int y)
-    {
+    protected GuiButtonDelSFZ(int buttonId, int x, int y) {
         super(buttonId, x, y, 22, 22, "");
         this.iconX = 112;
         this.iconY = 220;
@@ -36,26 +30,19 @@ public class GuiButtonDelSFZ extends GuiButton {
     /**
      * Draws this button to the screen.
      */
-    public void drawButton(Minecraft mc, int mouseX, int mouseY)
-    {
-        if (this.visible)
-        {
+    public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+        if (this.visible) {
             mc.getTextureManager().bindTexture(iconTexture);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
             int i = 219;
             int j = 0;
 
-            if (!this.enabled)
-            {
+            if (!this.enabled) {
                 j += this.width * 2;
-            }
-            else if (this.selected)
-            {
+            } else if (this.selected) {
                 j += this.width * 1;
-            }
-            else if (this.hovered)
-            {
+            } else if (this.hovered) {
                 j += this.width * 3;
             }
             //draw background
@@ -65,13 +52,11 @@ public class GuiButtonDelSFZ extends GuiButton {
         }
     }
 
-    public boolean isSelected()
-    {
+    public boolean isSelected() {
         return this.selected;
     }
 
-    public void setSelected(boolean selectedIn)
-    {
+    public void setSelected(boolean selectedIn) {
         this.selected = selectedIn;
     }
 }

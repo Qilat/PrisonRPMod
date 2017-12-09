@@ -23,6 +23,7 @@ public class SafeZone {
     public SafeZone(BlockPos pos1, BlockPos pos2) {
         this(null, pos1, pos2);
     }
+
     public SafeZone(String name, BlockPos pos1, BlockPos pos2) {
         this.id = SafeZoneManager.currentId++;
         this.name = name;

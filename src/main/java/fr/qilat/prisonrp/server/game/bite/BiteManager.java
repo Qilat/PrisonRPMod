@@ -6,6 +6,8 @@ import net.minecraft.potion.Potion;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.Random;
 /**
  * Created by Qilat on 28/11/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
+@SideOnly(Side.SERVER)
 public class BiteManager {
     private static BiteManager instance;
     private static HashMap<Bite, EntityPlayer> runningList = new HashMap<Bite, EntityPlayer>();

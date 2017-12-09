@@ -2,13 +2,17 @@ package fr.qilat.prisonrp.server.commands;
 
 import fr.qilat.prisonrp.server.game.safezone.SafeZone;
 import fr.qilat.prisonrp.server.game.safezone.SafeZoneManager;
+import fr.qilat.prisonrp.server.network.packets.SafeZonePacket;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 
 import java.util.ArrayList;
@@ -18,6 +22,7 @@ import java.util.List;
 /**
  * Created by Qilat on 28/11/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
+@SideOnly(Side.SERVER)
 public class SafeZoneCommand extends CommandBase {
     public static final String NAME = "sfz";
     public static final String USAGE = "/sfz <create|delete|list|info> [id]";
@@ -51,7 +56,7 @@ public class SafeZoneCommand extends CommandBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args.length < 1)
             throw new WrongUsageException(this.getUsage(sender));
-        if (!(sender instanceof EntityPlayer))
+        if (!(sender instanceof EntityPlayerMP))
             throw new WrongUsageException("Impossible depuis cette entité.");
 
         String str = args[0];
@@ -69,9 +74,8 @@ public class SafeZoneCommand extends CommandBase {
                 id += safeZone.getId() + " ";
 
             sender.sendMessage(new TextComponentString("ID des zones disponibles : " + id));
-            EntityPlayer player = (EntityPlayer) sender;
-
-            //TODO player.openGui();
+            EntityPlayerMP player = (EntityPlayerMP) sender;
+            SafeZonePacket.sendSafeZoneToPlayer(player.getUniqueID(), true);
 
         } else if (str.equals("delete")) {
             if (args.length != 2)
