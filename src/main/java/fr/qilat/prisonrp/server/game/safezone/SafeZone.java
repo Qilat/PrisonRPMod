@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
  */
 public class SafeZone {
     private int id;
+    private String name;
     private int pos1X;
     private int pos1Y;
     private int pos1Z;
@@ -20,7 +21,11 @@ public class SafeZone {
     }
 
     public SafeZone(BlockPos pos1, BlockPos pos2) {
+        this(null, pos1, pos2);
+    }
+    public SafeZone(String name, BlockPos pos1, BlockPos pos2) {
         this.id = SafeZoneManager.currentId++;
+        this.name = name;
         this.setPos1(pos1);
         this.setPos2(pos2);
     }
@@ -112,4 +117,11 @@ public class SafeZone {
         this.pos2Z = pos2Z;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

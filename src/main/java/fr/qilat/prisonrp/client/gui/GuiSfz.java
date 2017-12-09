@@ -4,10 +4,11 @@ import fr.qilat.prisonrp.PrisonRPCore;
 import fr.qilat.prisonrp.client.gui.component.GuiSafeZoneEntry;
 import fr.qilat.prisonrp.server.network.SafeZoneNetworkHandler;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiBeacon;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -44,16 +45,18 @@ public class GuiSfz extends GuiScreen {
         }
 
         insideLeft = this.width / 2 - GuiSfz.entryWidth / 2 + 2;
-        insideTop = this.height / 2 - 256 / 2 + 4;
+        insideTop = this.height / 2 - 256 / 2;
 
-        int yPos = insideTop + topPadding;
-        this.firstEntry = new GuiSafeZoneEntry(insideLeft, yPos, entryWidth, entryHeight);
-        yPos = insideTop + GuiSfz.entryHeight + topPadding;
-        this.secondEntry = new GuiSafeZoneEntry(insideLeft, yPos, entryWidth, entryHeight);
-        yPos = insideTop + 2 * GuiSfz.entryHeight + topPadding;
-        this.thirdEntry = new GuiSafeZoneEntry(insideLeft, yPos, entryWidth, entryHeight);
-        yPos = insideTop + 3 * GuiSfz.entryHeight + topPadding;
-        this.fourthEntry = new GuiSafeZoneEntry(insideLeft, yPos, entryWidth, entryHeight);
+        //int entryHeight = GuiSfz.entryHeight + 10;
+        int topPadding = 256 * 7 / 200;
+        int yPos = insideTop + topPadding + 2;
+        this.firstEntry = new GuiSafeZoneEntry(this, insideLeft, yPos, entryWidth, entryHeight);
+        yPos += GuiSfz.entryHeight + topPadding;
+        this.secondEntry = new GuiSafeZoneEntry(this, insideLeft, yPos, entryWidth, entryHeight);
+        yPos += GuiSfz.entryHeight + topPadding;
+        this.thirdEntry = new GuiSafeZoneEntry(this, insideLeft, yPos, entryWidth, entryHeight);
+        yPos += GuiSfz.entryHeight + topPadding;
+        this.fourthEntry = new GuiSafeZoneEntry(this, insideLeft, yPos, entryWidth, entryHeight);
 
         this.firstEntry.initGui();
         this.secondEntry.initGui();
@@ -62,18 +65,22 @@ public class GuiSfz extends GuiScreen {
 
     }
 
+    public <T extends GuiButton> T addButton(T button){
+        return super.addButton(button);
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        super.drawScreen(mouseX, mouseY, partialTicks);
         this.drawDefaultBackground();
-
-
-        this.firstEntry.setSafeZone(SafeZoneNetworkHandler.getZones().get(GuiSfz.firstIDShown));
-        this.secondEntry.setSafeZone(SafeZoneNetworkHandler.getZones().get(GuiSfz.firstIDShown + 1));
-        this.thirdEntry.setSafeZone(SafeZoneNetworkHandler.getZones().get(GuiSfz.firstIDShown + 2));
-        this.fourthEntry.setSafeZone(SafeZoneNetworkHandler.getZones().get(GuiSfz.firstIDShown + 3));
+        if(GuiSfz.firstIDShown != -1) {
+            this.firstEntry.setSafeZone(SafeZoneNetworkHandler.getZones().get(GuiSfz.firstIDShown));
+            this.secondEntry.setSafeZone(SafeZoneNetworkHandler.getZones().get(GuiSfz.firstIDShown + 1));
+            this.thirdEntry.setSafeZone(SafeZoneNetworkHandler.getZones().get(GuiSfz.firstIDShown + 2));
+            this.fourthEntry.setSafeZone(SafeZoneNetworkHandler.getZones().get(GuiSfz.firstIDShown + 3));
+        }
 
         this.drawEntries();
+        super.drawScreen(mouseX, mouseY, partialTicks);
 
     }
 
@@ -106,6 +113,20 @@ public class GuiSfz extends GuiScreen {
         this.secondEntry.mouseClicked(mouseX, mouseY, mouseButton);
         this.thirdEntry.mouseClicked(mouseX, mouseY, mouseButton);
         this.fourthEntry.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException {
+        super.actionPerformed(button);
+        switch (button.id){
+            case 7 :
+                //TODO SAVE
+                break;
+            case 8:
+                //TODO DEL
+                break;
+        }
+
     }
 
     private void drawEntries() {
