@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minecraft.util.math.BlockPos;
 
+import java.awt.*;
+
 /**
  * Created by Qilat on 29/11/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
@@ -16,6 +18,7 @@ public class SafeZone {
     private int pos2X;
     private int pos2Y;
     private int pos2Z;
+    private State state;
 
     public SafeZone() {
     }
@@ -29,6 +32,7 @@ public class SafeZone {
         this.name = name;
         this.setPos1(pos1);
         this.setPos2(pos2);
+        this.state = State.ENABLE;
     }
 
     public boolean contains(BlockPos pos) {
@@ -125,4 +129,31 @@ public class SafeZone {
     public void setName(String name) {
         this.name = name;
     }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+
+    public enum State{
+        ENABLE(new Color(0, 150, 0)),
+        DISABLE(new Color(150, 0, 0)),
+        DELETED(new Color(75, 75, 75));
+
+        Color color;
+
+        State(Color color){
+            this.color = color;
+        }
+
+        public Color getColor() {
+            return this.color;
+        }
+
+    }
+
 }

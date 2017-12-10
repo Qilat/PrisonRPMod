@@ -50,7 +50,8 @@ public class SafeZoneManager {
 
     public static boolean isInSafeZone(BlockPos pos) {
         for (SafeZone zone : safeZones)
-            if (zone.contains(pos))
+            if (zone.getState().equals(SafeZone.State.ENABLE)
+                    && zone.contains(pos))
                 return true;
         return false;
     }
@@ -60,7 +61,11 @@ public class SafeZoneManager {
     }
 
     public static int create(BlockPos pos1, BlockPos pos2) {
-        SafeZone safeZone = new SafeZone(pos1, pos2);
+        return SafeZoneManager.create(null, pos1, pos2);
+    }
+
+    public static int create(String name, BlockPos pos1, BlockPos pos2) {
+        SafeZone safeZone = new SafeZone(name, pos1, pos2);
         safeZones.add(safeZone);
         save(SAVE_FILE);
         return safeZone.getId();
@@ -73,13 +78,31 @@ public class SafeZoneManager {
         return false;
     }
 
+    public static boolean enable(int id){
+        SafeZone safeZone;
+        if((safeZone = get(id)) != null){
+            safeZone.setState(SafeZone.State.ENABLE);
+            save(SAVE_FILE);
+            return true;
+        }
+        return false;
+    }
+    public static boolean disable(int id){
+        SafeZone safeZone;
+        if((safeZone = get(id)) != null){
+            safeZone.setState(SafeZone.State.DISABLE);
+            save(SAVE_FILE);
+            return true;
+        }
+        return false;
+    }
     public static boolean delete(int id) {
-        for (SafeZone safeZone : safeZones)
-            if (safeZone.getId() == id) {
-                safeZones.remove(safeZone);
-                save(SAVE_FILE);
-                return true;
-            }
+        SafeZone safeZone;
+        if((safeZone = get(id)) != null){
+            safeZone.setState(SafeZone.State.DELETED);
+            save(SAVE_FILE);
+            return true;
+        }
         return false;
     }
 

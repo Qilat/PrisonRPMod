@@ -1,6 +1,7 @@
 package fr.qilat.prisonrp.server;
 
 import fr.qilat.prisonrp.PRPCommon;
+import fr.qilat.prisonrp.server.game.bite.BiteManager;
 import fr.qilat.prisonrp.server.game.listener.BiteListener;
 import fr.qilat.prisonrp.server.game.listener.SafeZoneListener;
 import fr.qilat.prisonrp.server.game.listener.SoundListener;
@@ -25,6 +26,9 @@ public class PRPServer extends PRPCommon {
     @Override
     public void init() {
         super.init();
+        BiteManager.init();
+        Logger.info("BiteManager load.");
+
         MinecraftForge.EVENT_BUS.register(new SoundListener());
         MinecraftForge.EVENT_BUS.register(new SafeZoneListener());
         MinecraftForge.EVENT_BUS.register(new BiteListener());

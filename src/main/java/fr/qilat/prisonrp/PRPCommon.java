@@ -23,8 +23,6 @@ public class PRPCommon {
     public void init() {
         MinecraftForge.EVENT_BUS.register(new RegisteringHandler());
         Logger.info("RegisteringHandler load.");
-        BiteManager.init();
-        Logger.info("BiteManager load.");
         EntityManager.registerEntities();
         Logger.info("Entities regitered.");
         PacketHandler.registerPackets();

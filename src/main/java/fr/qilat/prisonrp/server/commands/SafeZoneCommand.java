@@ -25,7 +25,7 @@ import java.util.List;
 @SideOnly(Side.SERVER)
 public class SafeZoneCommand extends CommandBase {
     public static final String NAME = "sfz";
-    public static final String USAGE = "/sfz <create|delete|list|info> [id]";
+    public static final String USAGE = "/sfz <create [name] | delete [id] | list | info> ";
 
     @Override
     public String getName() {
@@ -59,25 +59,23 @@ public class SafeZoneCommand extends CommandBase {
         if (!(sender instanceof EntityPlayerMP))
             throw new WrongUsageException("Impossible depuis cette entité.");
 
-        String str = args[0];
+        String subCommand = args[0];
 
-        if (str.equals("create")) {
-            if (args.length != 1)
+        if (subCommand.equals("create")) {
+            if (args.length > 2)
                 throw new WrongUsageException(this.getUsage(sender));
+            if(PosCommand.pos1HashMap.get(sender) == null || PosCommand.pos2HashMap.get(sender) == null)
+                throw new CommandException("Vous n'avez pas sélectionné deux positions à l'aide de la commande /pos <1|2>.");
+
             int id = SafeZoneManager.create(PosCommand.pos1HashMap.get(sender), PosCommand.pos2HashMap.get(sender));
             sender.sendMessage(new TextComponentString("Vous avez créer une safezone. ID : " + id));
-        } else if (str.equals("list")) {
+        } else if (subCommand.equals("list")) {
             if (args.length != 1)
                 throw new WrongUsageException(this.getUsage(sender));
-            String id = "";
-            for (SafeZone safeZone : SafeZoneManager.getSafeZones())
-                id += safeZone.getId() + " ";
-
-            sender.sendMessage(new TextComponentString("ID des zones disponibles : " + id));
             EntityPlayerMP player = (EntityPlayerMP) sender;
             SafeZonePacket.sendSafeZoneToPlayer(player.getUniqueID(), true);
 
-        } else if (str.equals("delete")) {
+        } else if (subCommand.equals("delete")) {
             if (args.length != 2)
                 throw new WrongUsageException(this.getUsage(sender));
             int safezoneId = parseInt(args[1]);
@@ -87,7 +85,7 @@ public class SafeZoneCommand extends CommandBase {
             } else {
                 throw new WrongUsageException("Zone inexistance");
             }
-        } else if (str.equals("info")) {
+        } else if (subCommand.equals("info")) {
             if (args.length != 2)
                 throw new WrongUsageException(this.getUsage(sender));
             int safezoneId = parseInt(args[1]);
@@ -98,6 +96,8 @@ public class SafeZoneCommand extends CommandBase {
             } else {
                 throw new WrongUsageException("Zone inexistante");
             }
+        } else if(subCommand.equals("reload")){
+
         }
     }
 }

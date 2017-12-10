@@ -17,7 +17,6 @@ import java.awt.*;
 /**
  * Created by Qilat on 25/11/2017 for forge-1.10.2-12.18.3.2511-mdk.
  */
-@SideOnly(Side.SERVER)
 public class EntityManager {
 
     public static void registerEntities() {

@@ -65,10 +65,6 @@ public class GuiSafeZoneEntry {
         this.pos2y = new GuiTextField(4, this.mc.fontRendererObj, baseX + 1 * fieldWidth + 2 * intervalX, baseY + fontHeight + 2 * intervalY + fieldHeight, fieldWidth, fieldHeight);
         this.pos2z = new GuiTextField(5, this.mc.fontRendererObj, baseX + 2 * fieldWidth + 3 * intervalX, baseY + fontHeight + 2 * intervalY + fieldHeight, fieldWidth + 2, fieldHeight);
 
-        if (getSafeZone() != null) {
-            setTextFiledContent();
-        }
-
         baseX += 2;
         baseY -= 2;
         this.buttonSaveSFZ = new GuiButtonSaveSFZ(7, baseX + 3 * fieldWidth + 4 * intervalX, baseY);
@@ -92,6 +88,11 @@ public class GuiSafeZoneEntry {
     }
 
     private void drawTextField() {
+        if (this.oldId != getSafeZone().getId()) {
+            this.setTextFiledContent();
+            this.oldId = this.getSafeZone().getId();
+        }
+
         this.name.drawTextBox();
 
         this.pos1x.drawTextBox();
@@ -104,21 +105,26 @@ public class GuiSafeZoneEntry {
     }
 
     public void drawEntry() {
-        if (this.safeZone != null) {
+        if (this.getSafeZone() != null) {
             int rectHeight = slotHeight;
             int rectWidth = listWidth * 75 / 100;
 
-            Gui.drawRect(this.baseX, this.baseY + 2, this.baseX + rectWidth, this.baseY + rectHeight - 1, new Color(100, 100, 100).getRGB());
+            Gui.drawRect(this.baseX, this.baseY + 2, this.baseX + rectWidth, this.baseY + rectHeight - 1, this.getSafeZone().getState().getColor().getRGB());
             this.mc.fontRendererObj.drawString("ID n°" + Integer.toString(this.safeZone.getId()) + " : Undefined name", baseX + 7, baseY + 5, new Color(255, 255, 255).getRGB());
-
-            if (getSafeZone() != null
-                    && this.oldId != getSafeZone().getId()) {
-                this.setTextFiledContent();
-                this.oldId = this.getSafeZone().getId();
-            }
-
             this.drawTextField();
+            this.showButton();
+        }else{
+            this.hideButton();
         }
+
+    }
+    private void showButton(){
+        this.buttonSaveSFZ.visible = true;
+        this.buttonDelSFZ.visible = true;
+    }
+    private void hideButton(){
+        this.buttonSaveSFZ.visible = false;
+        this.buttonDelSFZ.visible = false;
     }
 
     public void updateCursorPos() {
@@ -145,6 +151,10 @@ public class GuiSafeZoneEntry {
     }
 
     public void setSafeZone(SafeZone zone) {
+        if(zone == null){
+            this.safeZone = null;
+            return;
+        }
         if (this.oldId != zone.getId())
             this.safeZone = zone;
     }

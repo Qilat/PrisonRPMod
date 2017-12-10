@@ -29,7 +29,7 @@ public class GuiSfz extends GuiScreen {
     private static int insideTop;
     private static int entryWidth = 220;
     private static int entryHeight = 50;
-
+    private static int amountShown = 4;
     static {
         DEFAULT_BACKGROUND = new ResourceLocation(PrisonRPCore.MODID, ROOT_DIRECTORY + "defaultbackground.png");
     }
@@ -98,7 +98,7 @@ public class GuiSfz extends GuiScreen {
             this.drawEntries();
 
             this.upButton.visible = firstIDShown != 0;
-            this.downButton.visible = firstIDShown + 4 != SafeZoneNetworkHandler.getZones().size();
+            this.downButton.visible = firstIDShown + amountShown != SafeZoneNetworkHandler.getZones().size() && SafeZoneNetworkHandler.getZones().size() > amountShown;
 
             super.drawScreen(mouseX, mouseY, partialTicks);
         } else {
@@ -148,13 +148,13 @@ public class GuiSfz extends GuiScreen {
                 //TODO DEL
                 break;
             case 9:
-                if (firstIDShown != 0) {
+                if (firstIDShown != 0 && SafeZoneNetworkHandler.getZones().size() > amountShown) {
                     oldIDShown = firstIDShown;
                     firstIDShown--;
                 }
                 break;
             case 10:
-                if (firstIDShown + 4 != SafeZoneNetworkHandler.getZones().size()) {
+                if (firstIDShown + amountShown != SafeZoneNetworkHandler.getZones().size()) {
                     oldIDShown = firstIDShown;
                     firstIDShown++;
                 }
